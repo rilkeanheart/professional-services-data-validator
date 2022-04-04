@@ -390,7 +390,8 @@ class ValidationBuilder(object):
 
         **WARNING** this can skew results and should be used carefully
         """
-        limit = self.config_manager.query_limit
+#        limit = self.config_manager.query_limit
+        limit = 500000
         self.source_builder.limit = limit
         self.target_builder.limit = limit
 
