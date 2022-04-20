@@ -302,18 +302,14 @@ class DataValidation(object):
             source_df = self.config_manager.source_client.execute(source_query)
             target_df = self.config_manager.target_client.execute(target_query)
             #Replacing the /n and /r for all columns - Srikanth
-            source_df = source_df.replace(r'\n','', regex=True)
-            target_df = target_df.replace(r'\n','', regex=True)
-            source_df = source_df.replace(r'\r','', regex=True)
-            target_df = target_df.replace(r'\r','', regex=True)
+            target_df = target_df.replace(r'\n|\r','', regex=True)
+            source_df = source_df.replace(r'\n|\r','', regex=True)
             #Loop through the columns to find timestamp and convert the data type to timestamp with no tz
             for column in target_df.columns:
                 if is_datetime64_ns_dtype(target_df[column]):
                     print(target_df[column])
                     target_df[column] = target_df[column].astype('datetime64[ns]')
                     print(target_df[column])
-            print(source_df)
-            print(target_df)
             # Drop excess fields for row validation to avoid pandas errors for unsupported column data types (i.e structs)
             if (
                 self.config_manager.validation_type == consts.ROW_VALIDATION
