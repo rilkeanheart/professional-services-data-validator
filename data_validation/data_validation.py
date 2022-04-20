@@ -25,6 +25,7 @@ from data_validation.config_manager import ConfigManager
 from data_validation.query_builder.random_row_builder import RandomRowBuilder
 from data_validation.schema_validation import SchemaValidation
 from data_validation.validation_builder import ValidationBuilder
+from pandas.api.types import is_datetime64_ns_dtype
 
 """ The DataValidation class is where the code becomes source/target aware
 
@@ -300,7 +301,14 @@ class DataValidation(object):
         if process_in_memory:
             source_df = self.config_manager.source_client.execute(source_query)
             target_df = self.config_manager.target_client.execute(target_query)
-
+            #Loop through the columns to find timestamp and convert the data type to timestamp with no tz
+            for column in target_df.columns:
+                if is_datetime64_ns_dtype(target_df[column]):
+                    print(target_df[column])
+                    target_df[column] = target_df[column].astype('datetime64[ns]')
+                    print(target_df[column])
+            print(source_df)
+            print(target_df)
             # Drop excess fields for row validation to avoid pandas errors for unsupported column data types (i.e structs)
             if (
                 self.config_manager.validation_type == consts.ROW_VALIDATION
