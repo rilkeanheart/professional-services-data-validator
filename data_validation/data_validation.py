@@ -307,9 +307,7 @@ class DataValidation(object):
             #Loop through the columns to find timestamp and convert the data type to timestamp with no tz
             for column in target_df.columns:
                 if is_datetime64_ns_dtype(target_df[column]):
-                    print(target_df[column])
                     target_df[column] = target_df[column].astype('datetime64[ns]')
-                    print(target_df[column])
             # Drop excess fields for row validation to avoid pandas errors for unsupported column data types (i.e structs)
             if (
                 self.config_manager.validation_type == consts.ROW_VALIDATION
