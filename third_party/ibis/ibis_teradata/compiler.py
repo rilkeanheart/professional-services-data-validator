@@ -410,10 +410,10 @@ def _string_concat(translator, expr):
 
 def _string_join(translator, expr):
     sep, args = expr.op().args
-    return "ARRAY_TO_STRING([{}], {})".format(
-        ", ".join(map(translator.translate, args)), translator.translate(sep)
-    )
-
+    # return "ARRAY_TO_STRING([{}], {})".format(
+    #     ", ".join(map(translator.translate, args)), translator.translate(sep)
+    # )
+    return "CONCAT({})".format(", ".join(map(translator.translate, expr.op().arg)))
 
 def _string_ascii(translator, expr):
     (arg,) = expr.op().args
