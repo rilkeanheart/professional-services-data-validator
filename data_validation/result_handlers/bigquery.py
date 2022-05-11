@@ -54,6 +54,7 @@ class BigQueryResultHandler(object):
         return BigQueryResultHandler(client, table_id=table_id)
 
     def execute(self, config, result_df):
+        result_df.columns =result_df.columns.str.upper()              #uppercasing columns of result_df - Srikanth
         table = self._bigquery_client.get_table(self._table_id)
         chunk_errors = self._bigquery_client.insert_rows_from_dataframe(
             table, result_df
